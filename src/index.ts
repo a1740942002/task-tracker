@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from './config'
-import { readTasks, writeTasks, getNextId, createTask } from './task'
+import { readTasks, writeTasks, createTask } from './task'
 import { Task } from './type'
 
 program.name('task-cli').description('CLI to manage tasks').version('1.0.0')
@@ -22,7 +22,7 @@ program
   })
 
 /**
- * 更新任務內容：task-cli update 1 "Buy groceries and cook dinner"
+ * Update task content: task-cli update 1 "Buy groceries and cook dinner"
  */
 program
   .command('update <id> <description...>')
@@ -45,7 +45,7 @@ program
   })
 
 /**
- * 刪除任務：task-cli delete 1
+ * Delete task: task-cli delete 1
  */
 program
   .command('delete <id>')
@@ -65,7 +65,7 @@ program
   })
 
 /**
- * 標記為 in-progress：task-cli mark-in-progress 1
+ * Mark as in-progress: task-cli mark-in-progress 1
  */
 program
   .command('mark-in-progress <id>')
@@ -87,7 +87,7 @@ program
   })
 
 /**
- * 標記為 done：task-cli mark-done 1
+ * Mark as done: task-cli mark-done 1
  */
 program
   .command('mark-done <id>')
@@ -109,8 +109,8 @@ program
   })
 
 /**
- * 列出任務：task-cli list
- * 列出指定狀態：task-cli list done / todo / in-progress
+ * List tasks: task-cli list
+ * List by status: task-cli list done / todo / in-progress
  */
 program
   .command('list [status]')
@@ -148,5 +148,5 @@ program
     })
   })
 
-// 解析命令列參數
+// Parse command line arguments
 program.parse(process.argv)
