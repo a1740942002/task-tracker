@@ -1,15 +1,16 @@
-import { stat } from 'node:fs/promises'
-import path from 'node:path'
+#!/usr/bin/env node
+import { program } from 'commander'
 
-const filePath = path.join(__dirname, '../data/temp.json')
+program
+  .name('task-cli')
+  .description('An Task CLI written in TypeScript')
+  .version('1.0.0')
 
-async function main() {
-  try {
-    const stats = await stat(filePath)
-    console.log('stats', stats)
-  } catch (err) {
-    console.error(err)
-  }
-}
+program
+  .command('greet <name>')
+  .description('Greets a user by name')
+  .action((name: string) => {
+    console.log(`Hello, ${name}!`)
+  })
 
-main()
+program.parse(process.argv)
