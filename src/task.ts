@@ -2,6 +2,18 @@ import fs from 'fs'
 import { Task } from './type'
 import { TASKS_FILE } from './config'
 
+export async function createTask(tasks: Task[], description: string) {
+  const now = new Date().toISOString()
+  const newTask: Task = {
+    id: getNextId(tasks),
+    description,
+    status: 'todo',
+    createdAt: now,
+    updatedAt: now
+  }
+  return newTask
+}
+
 export async function readTasks(): Promise<Task[]> {
   try {
     const data = await fs.promises.readFile(TASKS_FILE, 'utf-8')

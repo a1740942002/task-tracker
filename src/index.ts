@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 import { program } from './config'
-import { readTasks, writeTasks, getNextId } from './task'
+import { readTasks, writeTasks, getNextId, createTask } from './task'
 import { Task } from './type'
+
+program.name('task-cli').description('CLI to manage tasks').version('1.0.0')
 
 program
   .command('add <description...>')
@@ -10,15 +12,8 @@ program
   .action(async (descriptionParts: string[]) => {
     const description = descriptionParts.join(' ')
     const tasks = await readTasks()
-    const now = new Date().toISOString()
 
-    const newTask: Task = {
-      id: getNextId(tasks),
-      description,
-      status: 'todo',
-      createdAt: now,
-      updatedAt: now
-    }
+    const newTask = await createTask(tasks, description)
 
     tasks.push(newTask)
     await writeTasks(tasks)
