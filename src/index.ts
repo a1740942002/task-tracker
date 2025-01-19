@@ -1,52 +1,9 @@
 #!/usr/bin/env node
-import fs from 'fs'
-import path from 'path'
-import { program } from 'commander'
 
-/**
- * 定義 Task 物件的結構
- */
-interface Task {
-  id: number
-  description: string
-  status: 'todo' | 'in-progress' | 'done'
-  createdAt: string
-  updatedAt: string
-}
+import { program } from './config'
+import { readTasks, writeTasks, getNextId } from './task'
+import { Task } from './type'
 
-// 指定 tasks.json 的位置（放在同層目錄）
-const TASKS_FILE = path.join(__dirname, '../data/tasks.json')
-
-// 讀取檔案，若不存在就回傳空陣列
-async function readTasks(): Promise<Task[]> {
-  try {
-    const data = await fs.promises.readFile(TASKS_FILE, 'utf-8')
-    return JSON.parse(data) as Task[]
-  } catch (error) {
-    // 檔案不存在或格式錯誤時，回傳空陣列
-    return []
-  }
-}
-
-// 寫入到 tasks.json
-async function writeTasks(tasks: Task[]): Promise<void> {
-  await fs.promises.writeFile(
-    TASKS_FILE,
-    JSON.stringify(tasks, null, 2),
-    'utf-8'
-  )
-}
-
-// 取得下一個任務 ID
-function getNextId(tasks: Task[]): number {
-  if (tasks.length === 0) return 1
-  const maxId = tasks.reduce((max, task) => (task.id > max ? task.id : max), 0)
-  return maxId + 1
-}
-
-/**
- * 新增任務：task-cli add "Buy groceries"
- */
 program
   .command('add <description...>')
   .description('Add a new task')
